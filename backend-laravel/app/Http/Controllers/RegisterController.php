@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Http\Resources\User as UserResource;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Str;
 
@@ -37,12 +36,5 @@ class RegisterController extends Controller
             'message' => 'User Succesfully Created.',
             'data' => $data
         ]);
-    }
-
-    public function index()
-    {
-        $user = User::all();
-
-        return $user;
     }
 }

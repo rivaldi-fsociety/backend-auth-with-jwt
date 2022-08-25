@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
+use App\Models\User;
 use Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $user = User::all();
+
+        return $user;
+    }
+
     public function store(Request $request)
     {
         try {
