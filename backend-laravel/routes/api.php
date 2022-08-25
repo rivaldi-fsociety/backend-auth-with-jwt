@@ -3,6 +3,7 @@
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PublicController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('register', RegisterController::class);
     Route::apiResource('login', LoginController::class);
     Route::apiResource('user', UserController::class);
+    Route::apiResource('public', PublicController::class);
 });
 
 // Route::post('/register', 'RegisterController@register');

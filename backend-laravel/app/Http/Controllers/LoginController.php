@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\User as UserResource;
 use App\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
@@ -15,7 +14,7 @@ class LoginController extends Controller
         if(!$token = auth()->attempt($credentials)){
             return response()->json(['error' => 'NIK or password invalid.'], 401);
         }
-
+        cookie('jwt', $token, 60);
         $data = [
             'id' => $request->user()->id,
             'nik' => $request->user()->nik,
