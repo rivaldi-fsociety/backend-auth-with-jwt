@@ -6,18 +6,44 @@ const requireAuth = (req, res, next) => {
     if(token){
         jwt.verify(token, 'secret', (err, decodedToken) => {
             if(err){
-                console.log('1');
-                res.status(500).send(err.message)
+                res.status(500).json({ error: err.message })
             }else{
-                console.log('2');
                 next()
-                // return decodedToken
-                // res.status(200).send(decodedToken)
             }
         })
     }else{
-        res.status(401).send('no token, no access.')
+        res.status(401).json({ error: 'no token, no access.' })
     }
 }
 
-module.exports = { requireAuth }
+const roleAccess = (permissions) => {
+    return (req, res, next) => {
+        const userRole = req.body.role != undefined ?  req.body.role : res.status(401).json({ error: 'required role to access endpoint.' })
+        if(permissions.includes(userRole)){
+            next()
+        }else{
+            res.status(401).json({ error: 'You dont have permissions.' });
+        }
+    }
+}
+
+const checkUser = (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    if(token){
+        jwt.verify(token, 'secret', (err, decodedToken) => {
+            if(err){
+                res.locals.id = null
+                next()
+            }else{
+                res.locals.id = decodedToken.sub
+                next()
+            }
+        })
+    }else{
+        res.locals.id = null
+        next()
+    }
+}
+
+module.exports = { requireAuth, roleAccess, checkUser}
